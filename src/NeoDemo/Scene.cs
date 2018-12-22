@@ -120,6 +120,7 @@ namespace Veldrid.NeoDemo
             cl.ClearDepthStencil(depthClear);
             Render(gd, cl, sc, RenderPasses.ShadowMapNear, lightFrustum, lightPos, _renderQueues[0], _cullableStage[0], _renderableStage[0], null, false);
 
+            NeoDemo._renderDoc?.StartFrameCapture();
             // Mid
             Matrix4x4 viewProj1 = UpdateDirectionalLightMatrices(
                 gd,
@@ -133,6 +134,10 @@ namespace Veldrid.NeoDemo
             cl.SetFullViewports();
             cl.ClearDepthStencil(depthClear);
             Render(gd, cl, sc, RenderPasses.ShadowMapMid, lightFrustum, lightPos, _renderQueues[0], _cullableStage[0], _renderableStage[0], null, false);
+            if (!NeoDemo._renderDoc?.EndFrameCapture() ?? true)
+            {
+                Console.WriteLine("Yeah i guess it failed .");
+            }
 
             // Far
             Matrix4x4 viewProj2 = UpdateDirectionalLightMatrices(

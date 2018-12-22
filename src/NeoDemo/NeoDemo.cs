@@ -37,6 +37,7 @@ namespace Veldrid.NeoDemo
         private readonly Dictionary<string, ImageSharpTexture> _textures = new Dictionary<string, ImageSharpTexture>();
         private bool _colorSrgb = true;
         private FullScreenQuad _fsq;
+        public static RenderDoc _renderDoc;
 
         public NeoDemo()
         {
@@ -111,6 +112,8 @@ namespace Veldrid.NeoDemo
 
             CreateAllObjects();
             ImGui.StyleColorsClassic();
+
+            RenderDoc.Load(out _renderDoc);
         }
 
         private void AddSponzaAtriumObjects()
@@ -362,6 +365,17 @@ namespace Veldrid.NeoDemo
                     }
 
                     ImGui.EndMenu();
+                }
+                if (_renderDoc != null)
+                {
+                    if (ImGui.BeginMenu("RenderDoc"))
+                    {
+                        if (ImGui.MenuItem("Trigger Capture"))
+                        {
+                            _renderDoc.TriggerCapture();
+                        }
+                        ImGui.EndMenu();
+                    }
                 }
 
                 ImGui.Text(_fta.CurrentAverageFramesPerSecond.ToString("000.0 fps / ") + _fta.CurrentAverageFrameTimeMilliseconds.ToString("#00.00 ms"));
